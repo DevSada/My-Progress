@@ -15,7 +15,7 @@ class CountdownCell: UICollectionViewCell {
     
     func configure(progress: Time) {
         
-        CountdownView().configure(progress: progress, frameView: self.contentView)
+        self.contentView.addSubview(CountdownView().configure(progress: progress, frameView: self.contentView, counterType: .cell))
     }
     
 }

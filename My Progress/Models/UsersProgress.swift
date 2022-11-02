@@ -27,3 +27,7 @@ struct User: Codable {
 struct ProgressDate: Codable {
     let startDate, finishDate: String
 }
+
+struct test: Codable {
+    
+}

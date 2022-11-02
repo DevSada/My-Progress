@@ -19,6 +19,9 @@
 		6D4C32F1290C09FD009BAD56 /* CountdownCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D4C32EF290C09FD009BAD56 /* CountdownCell.xib */; };
 		6D4C32F5290D6D15009BAD56 /* CountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4C32F4290D6D15009BAD56 /* CountdownView.swift */; };
 		6D4C32FA290FD84E009BAD56 /* UsersProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4C32F9290FD84E009BAD56 /* UsersProgress.swift */; };
+		6D4C32FC290FE719009BAD56 /* UsersProgress.json in Resources */ = {isa = PBXBuildFile; fileRef = 6D4C32FB290FE719009BAD56 /* UsersProgress.json */; };
+		6D4C32FE290FED2A009BAD56 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4C32FD290FED2A009BAD56 /* DataManager.swift */; };
+		6D4C3300290FEDE1009BAD56 /* CounterViewTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4C32FF290FEDE1009BAD56 /* CounterViewTypes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,9 @@
 		6D4C32EF290C09FD009BAD56 /* CountdownCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CountdownCell.xib; sourceTree = "<group>"; };
 		6D4C32F4290D6D15009BAD56 /* CountdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownView.swift; sourceTree = "<group>"; };
 		6D4C32F9290FD84E009BAD56 /* UsersProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersProgress.swift; sourceTree = "<group>"; };
+		6D4C32FB290FE719009BAD56 /* UsersProgress.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = UsersProgress.json; path = "My Progress/Resources/UsersProgress.json"; sourceTree = SOURCE_ROOT; };
+		6D4C32FD290FED2A009BAD56 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		6D4C32FF290FEDE1009BAD56 /* CounterViewTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterViewTypes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +109,8 @@
 				6D4C32F4290D6D15009BAD56 /* CountdownView.swift */,
 				6D4C32F9290FD84E009BAD56 /* UsersProgress.swift */,
 				6D3A50E9290BDC41003A5EFB /* Time.swift */,
+				6D4C32FF290FEDE1009BAD56 /* CounterViewTypes.swift */,
+				6D4C32FD290FED2A009BAD56 /* DataManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -110,6 +118,7 @@
 		6D3A50EC290BDC55003A5EFB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6D4C32FB290FE719009BAD56 /* UsersProgress.json */,
 				6D3A50D3290BDA1A003A5EFB /* AppDelegate.swift */,
 				6D3A50D5290BDA1A003A5EFB /* SceneDelegate.swift */,
 			);
@@ -194,6 +203,7 @@
 				6D3A50E0290BDA1B003A5EFB /* LaunchScreen.storyboard in Resources */,
 				6D3A50DD290BDA1B003A5EFB /* Assets.xcassets in Resources */,
 				6D3A50DB290BDA1A003A5EFB /* Main.storyboard in Resources */,
+				6D4C32FC290FE719009BAD56 /* UsersProgress.json in Resources */,
 				6D4C32F1290C09FD009BAD56 /* CountdownCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -207,11 +217,13 @@
 			files = (
 				6D4C32F0290C09FD009BAD56 /* CountdownCell.swift in Sources */,
 				6D3A50EA290BDC41003A5EFB /* Time.swift in Sources */,
+				6D4C3300290FEDE1009BAD56 /* CounterViewTypes.swift in Sources */,
 				6D3A50EF290BDCF9003A5EFB /* CountdownViewController.swift in Sources */,
 				6D4C32F5290D6D15009BAD56 /* CountdownView.swift in Sources */,
 				6D4C32ED290C0490009BAD56 /* AllProgressViewController.swift in Sources */,
 				6D4C32FA290FD84E009BAD56 /* UsersProgress.swift in Sources */,
 				6D3A50D4290BDA1A003A5EFB /* AppDelegate.swift in Sources */,
+				6D4C32FE290FED2A009BAD56 /* DataManager.swift in Sources */,
 				6D3A50D6290BDA1A003A5EFB /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

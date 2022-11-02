@@ -12,26 +12,50 @@ class CountdownView {
     var timer: Timer?
     var progress: Time!
     var labelCounter: UILabel!
+    var radius: CGFloat!
     
-    func configure(progress: Time, frameView: UIView) {
+    func configure(progress: Time?, frameView: UIView, counterType: CounterViewTypes) -> UIView{
         
-        let frameWidth = frameView.frame.width
+        
         self.progress = progress
         
-        let secondsInDegrees = Double(Time.getSecondsBetweenStartFinish(progress: self.progress)) / 720
-        let currentAngle = CGFloat(540 - abs(Double(Time.getSecondsTillFinish(progress: self.progress)) / secondsInDegrees))
+        let frameWidth = frameView.frame.width
+        var circleWidth: CGFloat = frameWidth / 7
+        radius = frameWidth / 3
+        let startAngle: CGFloat = 180
+        let endAngle: CGFloat = 540
         
-        createCountdownCounter()
-        // background circle
-        frameView.layer.addSublayer(setCircle(startAngle: -180, endAngle: 540, circleWith: 60, circleColor: UIColor.lightGray.cgColor, frameWidth: frameWidth, needAnimation: false))
-        // taken circle
-        frameView.layer.addSublayer(setCircle(startAngle: -180, endAngle: currentAngle, circleWith: 45, circleColor: UIColor.systemPink.cgColor, frameWidth: frameWidth, needAnimation: false))
-        // counter circle
-        frameView.layer.addSublayer(setCircle(startAngle: currentAngle, endAngle: 540, circleWith: 45, circleColor: UIColor.systemPink.cgColor, frameWidth: frameWidth, needAnimation: true))
+        let countdownView = UIView(frame: CGRect(x: 0, y: 0, width: frameWidth, height: frameWidth))
         
-        frameView.addSubview(setLabel(frameWidth: frameWidth))
+        if counterType == .cell
+        {
+            radius = frameWidth / 6
+            circleWidth = frameWidth / 2
+        }
         
-       getLabel(frameView: frameView)
+        // MARK: - background circle
+        countdownView.layer.addSublayer(setCircle(startAngle: -startAngle, endAngle: endAngle, circleWith: circleWidth, circleColor: UIColor.lightGray.cgColor, frameWidth: frameWidth, needAnimation: false))
+        
+        if counterType != .add {
+            
+            let secondsInDegrees = Double(DataManager.getSecondsBetweenStartFinish(progress: self.progress)) / (startAngle + endAngle)
+            let currentAngle = CGFloat(endAngle - abs(Double(DataManager.getSecondsTillFinish(progress: self.progress)) / secondsInDegrees))
+            
+            // MARK: - taken circle
+            countdownView.layer.addSublayer(setCircle(startAngle: -startAngle, endAngle: currentAngle, circleWith: circleWidth * 0.75, circleColor: UIColor.systemPink.cgColor, frameWidth: frameWidth, needAnimation: false))
+            
+            // MARK: - counter circle
+            countdownView.layer.addSublayer(setCircle(startAngle: currentAngle, endAngle: endAngle, circleWith: circleWidth * 0.75, circleColor: UIColor.systemPink.cgColor, frameWidth: frameWidth, needAnimation: true))
+            
+            countdownView.addSubview(setLabel(frameWidth: frameWidth))
+            
+            createCountdownCounter()
+            getLabelForCounter(frameView: countdownView)
+        }
+        
+        countdownView.restorationIdentifier = "countdownView"
+        
+        return countdownView
     }
     
     private func setLabel(frameWidth: CGFloat) -> UILabel {
@@ -39,10 +63,10 @@ class CountdownView {
         let label = UILabel(frame: CGRect(x: frameWidth / 2 - 160, y: frameWidth / 2 - 285, width: 150, height: 21))
         label.center = CGPoint(x: frameWidth / 2, y: frameWidth / 2)
         label.textAlignment = .center
-        if Time.getSecondsTillFinish(progress: self.progress) <= 0 {
+        if DataManager.getSecondsTillFinish(progress: self.progress) <= 0 {
             label.text = "You did it!"
         } else {
-            label.text = "\(Time.getDateTillFinish(progress: self.progress)) left"
+            label.text = "\(DataManager.getDateTillFinish(progress: self.progress)) left"
         }
         label.font = UIFont(name: label.font.fontName, size: 12)
         label.restorationIdentifier = "labelCounter"
@@ -50,7 +74,7 @@ class CountdownView {
         return label
     }
     
-    private func getLabel(frameView: UIView)  {
+    private func getLabelForCounter(frameView: UIView)  {
         
         for label in frameView.subviews {
             if let labelCounter = label as? UILabel {
@@ -77,12 +101,12 @@ class CountdownView {
     }
     
     private func createSegment(startAngle: CGFloat, endAngle: CGFloat, frameWidth: CGFloat) -> UIBezierPath {
-        return UIBezierPath(arcCenter: CGPoint(x: frameWidth / 2, y: frameWidth / 2), radius: frameWidth / 6, startAngle: startAngle.toRadians(), endAngle: endAngle.toRadians(), clockwise: true)
+        return UIBezierPath(arcCenter: CGPoint(x: frameWidth / 2, y: frameWidth / 2), radius: radius, startAngle: startAngle.toRadians(), endAngle: endAngle.toRadians(), clockwise: true)
     }
     
     private func addCircleAnimation(to layer: CALayer) {
         let drawAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        drawAnimation.duration = Time.getDateFromString(date: self.progress.finishDate).timeIntervalSinceNow // counter speed in seconds
+        drawAnimation.duration = DataManager.getDateFromString(date: self.progress.finishDate).timeIntervalSinceNow // counter speed in seconds
         drawAnimation.repeatCount = 1.0
         drawAnimation.isRemovedOnCompletion = false
         drawAnimation.fromValue = 0
@@ -96,12 +120,12 @@ class CountdownView {
     }
     
     @objc func handleTimer(_ timer: Timer) {
-    
-        if Time.getSecondsTillFinish(progress: self.progress) <= 0 {
+        
+        if DataManager.getSecondsTillFinish(progress: self.progress) <= 0 {
             timer.invalidate()
             labelCounter.text = "You did it!"
         } else {
-            labelCounter.text = "\(Time.getDateTillFinish(progress: self.progress)) left"
+            labelCounter.text = "\(DataManager.getDateTillFinish(progress: self.progress)) left"
         }
         
         
