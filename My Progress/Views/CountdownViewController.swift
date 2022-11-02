@@ -155,9 +155,11 @@ class CountdownViewController: UIViewController {
     private func setEditButton() -> UIButton {
         let button = UIButton(frame: .zero)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.setTitle("Edit", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(UIColor.black, for: .normal)
         button.backgroundColor = .green
+        button.layer.cornerRadius = 15
         return button
         
     }
@@ -190,7 +192,7 @@ class CountdownViewController: UIViewController {
     
     private func getDetailsLabelConstraint(to label: UILabel, in stack: CountdownTimeStacks) -> [NSLayoutConstraint] {
         var contraint = [
-            label.widthAnchor.constraint(equalToConstant: 150),
+            label.widthAnchor.constraint(equalToConstant: 170),
             label.topAnchor.constraint(equalTo: previousItem.topAnchor, constant: self.view.frame.width)
         ]
         if stack != .end {
