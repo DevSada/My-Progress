@@ -42,7 +42,7 @@ class CountdownView {
             let currentAngle = CGFloat(endAngle - abs(Double(DataManager.getSecondsTillFinish(progress: self.progress)) / secondsInDegrees))
             
             // MARK: - taken circle
-            countdownView.layer.addSublayer(setCircle(startAngle: -startAngle, endAngle: currentAngle, circleWith: circleWidth * 0.75, circleColor: UIColor.systemPink.cgColor, frameWidth: frameWidth, needAnimation: false))
+            countdownView.layer.addSublayer(setCircle(startAngle: -startAngle, endAngle: currentAngle, circleWith: circleWidth * 0.75, circleColor: circleColor, frameWidth: frameWidth, needAnimation: false))
             
             // MARK: - counter circle
             countdownView.layer.addSublayer(setCircle(startAngle: currentAngle, endAngle: endAngle, circleWith: circleWidth * 0.75, circleColor: UIColor.systemPink.cgColor, frameWidth: frameWidth, needAnimation: true))

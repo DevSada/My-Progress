@@ -19,10 +19,8 @@ class CountdownViewController: UIViewController {
         super.viewDidLoad()
         
         /// tmp
-        progress = Time.getProgress()[4]
-        counterType = .show
-        
-        
+//        progress = Time.getProgress()[4]
+//        counterType = .show
         // end tmp
         
         safeArea = view.safeAreaLayoutGuide
@@ -35,22 +33,27 @@ class CountdownViewController: UIViewController {
         // MARK: Header
         
         if counterType == .show {
-            let headerLabel = setHeadLabel()
-            headerLabel.text = "Header_1"
+            let headerLabel = setLabel()
+            headerLabel.attributedText = NSMutableAttributedString(string: progress.goal, attributes: headerAttributes)
             self.view.addSubview(headerLabel)
             NSLayoutConstraint.activate(getHeadLabelConstraint(to: headerLabel))
             
-            let sublineLabel = setHeadLabel()
-            sublineLabel.text = "Subline_1"
+            let sublineLabel = setLabel()
+          //  sublineLabel.text = "Subline_1"
+           // sublineLabel.font = sublineFont
+            sublineLabel.attributedText = NSMutableAttributedString(string: progress.subGoal, attributes: sublineAttributes)
             self.view.addSubview(sublineLabel)
             NSLayoutConstraint.activate(getHeadLabelConstraint(to: sublineLabel))
         } else {
-            let headerTextField = setHeadTextField()
+            let headerTextField = UITextField(frame: .zero)// = setHeadTextField()
+            setTextField(for: headerTextField)
             headerTextField.placeholder = "Text your goals here"
             self.view.addSubview(headerTextField)
             NSLayoutConstraint.activate(getHeadTextFieldConstraint(to: headerTextField))
             
-            let sublineTextField = setHeadTextField()
+            //let sublineTextField = setHeadTextField()
+            let sublineTextField = UITextField(frame: .zero)// = setHeadTextField()
+            setTextField(for: sublineTextField)
             sublineTextField.placeholder = "Text your subgoals here"
             self.view.addSubview(sublineTextField)
             NSLayoutConstraint.activate(getHeadTextFieldConstraint(to: sublineTextField))
@@ -86,13 +89,25 @@ class CountdownViewController: UIViewController {
         // MARK: EndStack
         
         if counterType != .show {
-            let startedTextField = setDetailsTextField(in: .start)
-            startedTextField.placeholder = "Select start time"
+            let startedTextField = UITextField(frame: .zero)
+            setTextField(for: startedTextField)
+            if counterType == .edit {
+                startedTextField.placeholder = progress.startDate
+            } else {
+                startedTextField.placeholder = "Select ending time"
+            }
             self.view.addSubview(startedTextField)
             NSLayoutConstraint.activate(getDetailsTextFieldConstraint(to: startedTextField, in: .start))
             
-            let endTextField = setDetailsTextField(in: .end)
-            endTextField.placeholder = "Select ending time"
+
+            let endTextField = UITextField(frame: .zero)
+            setTextField(for: endTextField)
+            if counterType == .edit {
+                endTextField.placeholder = progress.finishDate
+            } else {
+                endTextField.placeholder = "Select ending time"
+            }
+            
             self.view.addSubview(endTextField)
             NSLayoutConstraint.activate(getDetailsTextFieldConstraint(to: endTextField, in: .end))
         }
@@ -108,33 +123,35 @@ class CountdownViewController: UIViewController {
         
     }
     
-    private func setHeadLabel() -> UILabel {
+    private func setLabel() -> UILabel {
         let label = UILabel(frame: .zero)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }
     
-    private func setHeadTextField() -> UITextField {
-        let textfield = UITextField(frame: .zero)
+    private func setTextField(for textfield: UITextField){
         textfield.textAlignment = .center
+        textfield.layer.borderWidth = 1
+        textfield.layer.cornerRadius = 10
+        textfield.font = standartFont
         textfield.translatesAutoresizingMaskIntoConstraints = false
-        return textfield
+      
     }
     
     private func setDetailsLabel(in stack: CountdownTimeStacks) -> UILabel {
         let label = UILabel(frame: .zero)
-        let attrs1 = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 18), NSAttributedString.Key.foregroundColor : UIColor.green]
-        var attributedString1 = NSMutableAttributedString(string:"STARTED\n", attributes:attrs1)
+        
+        var attributedString1 = NSMutableAttributedString(string:"STARTED\n", attributes: labelAttributes)
         if stack == .end {
-            attributedString1 = NSMutableAttributedString(string:"WILL END\n", attributes:attrs1)
+            attributedString1 = NSMutableAttributedString(string:"WILL END\n", attributes: labelAttributes)
         }
         if counterType == .show {
             label.numberOfLines = 2
-            let attrs2 = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 18), NSAttributedString.Key.foregroundColor : UIColor.black]
-            var attributedString2 = NSMutableAttributedString(string: progress.startDate, attributes:attrs2)
+
+            var attributedString2 = NSMutableAttributedString(string: progress.startDate, attributes: timeLabelAttributes)
             if stack == .end {
-                attributedString2 = NSMutableAttributedString(string: progress.finishDate, attributes:attrs2)
+                attributedString2 = NSMutableAttributedString(string: progress.finishDate, attributes: timeLabelAttributes)
             }
             attributedString1.append(attributedString2)
         }
@@ -144,24 +161,46 @@ class CountdownViewController: UIViewController {
         return label
     }
     
-    
-    private func setDetailsTextField(in stack: CountdownTimeStacks) -> UITextField {
-        let textfield = UITextField(frame: .zero)
-        
-        textfield.translatesAutoresizingMaskIntoConstraints = false
-        return textfield
-    }
-    
     private func setEditButton() -> UIButton {
         let button = UIButton(frame: .zero)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.setTitle("Edit", for: .normal)
-        button.setTitleColor(UIColor.black, for: .normal)
+        button.titleLabel?.font = labelFont
+        switch counterType {
+        case .edit:
+            button.setTitle("GO!", for: .normal)
+        case .show:
+            button.setTitle("CHANGE", for: .normal)
+        case .add:
+            button.setTitle("ADD", for: .normal)
+        default:
+            break
+        }
+        
+        button.setTitleColor(UIColor.gray, for: .normal)
         button.backgroundColor = .green
         button.layer.cornerRadius = 15
+        button.addTarget(self, action: #selector(buttonTap), for: .touchUpInside)
         return button
-        
+    }
+    
+    @objc func buttonTap(sender: UIButton) {
+        switch counterType {
+        case .edit:
+            counterType = .show
+        case .show:
+            counterType = .edit
+        case .add:
+            counterType = .show
+        default:
+            break
+        }
+      //  self.view.setNeedsDisplay()
+        view.subviews.forEach({ $0.removeFromSuperview() }) // this gets things done
+        view.subviews.map({ $0.removeFromSuperview() })
+      //  self.loadView()
+        self.viewDidLoad()
+                                 //   self.viewWillAppear(true)
+    
     }
     
     
@@ -172,7 +211,7 @@ class CountdownViewController: UIViewController {
         let contraint = [
             label.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
             label.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16),
-            label.topAnchor.constraint(equalTo: previousItem.topAnchor, constant: 48)
+            label.topAnchor.constraint(equalTo: previousItem.topAnchor, constant: 32)
         ]
         previousItem = label
         return contraint
@@ -182,7 +221,8 @@ class CountdownViewController: UIViewController {
         let contraint = [
             textField.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16),
-            textField.topAnchor.constraint(equalTo: previousItem.topAnchor, constant: 48)
+            textField.topAnchor.constraint(equalTo: previousItem.topAnchor, constant: 32),
+            textField.heightAnchor.constraint(equalToConstant: 20)
         ]
         previousItem = textField
         return contraint
@@ -207,6 +247,7 @@ class CountdownViewController: UIViewController {
     private func getDetailsTextFieldConstraint(to textField: UITextField, in stack: CountdownTimeStacks) -> [NSLayoutConstraint] {
         var contraint = [
             textField.widthAnchor.constraint(equalToConstant: 150),
+            textField.heightAnchor.constraint(equalToConstant: 20),
             textField.topAnchor.constraint(equalTo: previousItem.topAnchor, constant: 32)
         ]
         
