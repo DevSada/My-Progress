@@ -48,7 +48,13 @@ struct DataManager {
         task.resume()
     }
     
+    func updateProgressData(for progressId: Int) {
+        
+    }
     
+    func addNewProgressData() {
+        
+    }
 
 
     func parseJSON(withData data: Data) {
@@ -60,4 +66,6 @@ struct DataManager {
             print(error.localizedDescription)
         }
     }
+    
+    
 }
