@@ -47,6 +47,8 @@ struct DataManager {
         }
         task.resume()
     }
+    
+    
 
 
     func parseJSON(withData data: Data) {

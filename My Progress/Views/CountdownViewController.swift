@@ -142,6 +142,9 @@ class CountdownViewController: UIViewController {
     private func setDetailsLabel(in stack: CountdownTimeStacks) -> UILabel {
         let label = UILabel(frame: .zero)
         
+
+
+        
         var attributedString1 = NSMutableAttributedString(string:"STARTED\n", attributes: labelAttributes)
         if stack == .end {
             attributedString1 = NSMutableAttributedString(string:"WILL END\n", attributes: labelAttributes)
@@ -153,8 +156,14 @@ class CountdownViewController: UIViewController {
             if stack == .end {
                 attributedString2 = NSMutableAttributedString(string: progress.finishDate, attributes: timeLabelAttributes)
             }
+            
             attributedString1.append(attributedString2)
+        
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = 10
+            attributedString1.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attributedString1.length))
         }
+        
         label.attributedText = attributedString1
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -194,13 +203,9 @@ class CountdownViewController: UIViewController {
         default:
             break
         }
-      //  self.view.setNeedsDisplay()
-        view.subviews.forEach({ $0.removeFromSuperview() }) // this gets things done
-        view.subviews.map({ $0.removeFromSuperview() })
-      //  self.loadView()
+        view.subviews.forEach({ $0.removeFromSuperview() })
         self.viewDidLoad()
-                                 //   self.viewWillAppear(true)
-    
+
     }
     
     
@@ -263,11 +268,17 @@ class CountdownViewController: UIViewController {
     // MARK: Edit Button Constraints
     
     private func getEditButtonConstraint(to button: UIButton) -> [NSLayoutConstraint] {
-        let contraint = [
+        var contraint = [
             button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            button.widthAnchor.constraint(equalToConstant: 100),
-            button.topAnchor.constraint(equalTo: previousItem.topAnchor, constant: 82)
+            button.widthAnchor.constraint(equalToConstant: 100)
         ]
+        
+        
+        if counterType != .show {
+            contraint.append(button.topAnchor.constraint(equalTo: previousItem.topAnchor, constant: 52))
+        } else {
+            contraint.append(button.topAnchor.constraint(equalTo: previousItem.topAnchor, constant: 82))
+        }
         previousItem = button
         return contraint
     }

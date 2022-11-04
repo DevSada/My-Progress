@@ -25,8 +25,6 @@ let accentColor = UIColor(cgColor: CGColor(red: 79, green: 8, blue: 35, alpha: 1
 
 let standartFont = UIFont.init(name: AppFontName.regular, size: 15)
 let labelFont = UIFont.init(name: AppFontName.bold, size: 18)
-//let sublineFont = UIFont.init(name: AppFontName.bold, size: 13)
-//let headerFont = UIFont.init(name: AppFontName.bold, size: 24)
 
 
 let labelAttributes = [
@@ -34,16 +32,10 @@ let labelAttributes = [
     NSAttributedString.Key.foregroundColor : UIColor.green
 ]
 
-//let attributedString = NSMutableAttributedString(string: "Your text")
-//let paragraphStyle = NSMutableParagraphStyle()
-//// *** set LineSpacing property in points ***
-//paragraphStyle.lineSpacing = 2
-//attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attributedString.length))
-
 let timeLabelAttributes = [
     NSAttributedString.Key.font : UIFont.init(name: AppFontName.bold, size: 15),
     NSAttributedString.Key.foregroundColor : UIColor.lightGray
-]
+    ]
 
 let headerAttributes = [
     NSAttributedString.Key.font : UIFont.init(name: AppFontName.bold, size: 24),
