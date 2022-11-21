@@ -17,12 +17,7 @@ class CountdownViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        /// tmp
-//        progress = Time.getProgress()[4]
-//        counterType = .show
-        // end tmp
-        
+                
         safeArea = view.safeAreaLayoutGuide
         previousItem = self.view
         
@@ -174,6 +169,10 @@ class CountdownViewController: UIViewController {
         let button = UIButton(frame: .zero)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = labelFont
+        
+//        for counterType in CounterViewTypes.allCases {
+//
+//        }
         switch counterType {
         case .edit:
             button.setTitle("GO!", for: .normal)

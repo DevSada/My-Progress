@@ -23,7 +23,60 @@ class AllProgressViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        //Time.getProgressData()
+        
+        
+        
+        
+        //        let urlString = "https://github.com/DevSada/My-Progress/blob/main/My%20Progress/Resources/UsersProgress.json"//https://drive.google.com/file/d/1_dKjoaA7BoWnNDXsi0tiCDQBbEfll8pI"
+        //        guard let url = URL(string: urlString) else { return }
+        //        let session = URLSession(configuration: .default)
+        //        let task = session.dataTask(with: url) { data, response, error in
+        //            if let data = data {
+        //                self.parseJSON(withData: data)
+        //            }
+        //        }
+        //        task.resume()
+        //
+        //        if let jsonData = urlString.data(using: .utf8),
+        //            let documentDirectory = FileManager.default.urls(for: .documentDirectory,
+        //                                                             in: .userDomainMask).first {
+        //            let pathWithFileName = documentDirectory.appendingPathComponent("myJsonData")
+        //            do {
+        //                try {
+        //                    jsonData.write(to: pathWithFileName)
+        //                    print(pathWithFileName)
+        //
+        //                }
+        //            } catch {
+        //                // handle error
+        //            }
+        //        }
+        
+        guard let url = URL(string: "https://github.com/DevSada/My-Progress/blob/main/My%20Progress/Resources/UsersProgress.json") else {return}
+        
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data else { return }
+            
+            do {
+                let progress = try JSONDecoder().decode(UsersProgress.self, from: data)
+                print(progress)
+            } catch {
+                print(error)
+            }
+        }.resume()
+        
+        
+    }
+    
+    func parseJSON(withData data: Data) {
+        let decoder = JSONDecoder()
+        do {
+            let usersProgress = try decoder.decode(UsersProgress.self, from: data)
+            print(usersProgress.users[0].progressDates[0])
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
     }
     
 }

@@ -7,11 +7,8 @@
 
 import UIKit
 
-enum CounterViewTypes {
-    case add
-    case edit
-    case show
-    case cell
+enum CounterViewTypes: CaseIterable {
+    case add, edit, show, cell
 }
 
 enum CountdownTimeStacks {

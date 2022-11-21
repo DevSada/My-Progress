@@ -46,10 +46,37 @@ struct DataManager {
             }
         }
         task.resume()
+        
+//        if let jsonData = jsonString.data(using: .utf8),
+//            let documentDirectory = FileManager.default.urls(for: .documentDirectory,
+//                                                             in: .userDomainMask).first {
+//            let pathWithFileName = documentDirectory.appendingPathComponent("myJsonData")
+//            do {
+//                try jsonData.write(to: pathWithFileName)
+//            } catch {
+//                // handle error
+//            }
+//        }
+        
+        
+//        let jsonString = "{\"location\": \"the moon\"}"
+//
+//        if let documentDirectory = FileManager.default.urls(for: .documentDirectory,
+//                                                            in: .userDomainMask).first {
+//            let pathWithFilename = documentDirectory.appendingPathComponent("myJsonString.json")
+//            do {
+//                try jsonString.write(to: pathWithFilename,
+//                                     atomically: true,
+//                                     encoding: .utf8)
+//            } catch {
+//                // Handle error
+//            }
+//        }
     }
     
     func updateProgressData(for progressId: Int) {
-        
+        let urlString = "https://github.com/DevSada/My-Progress/blob/main/My%20Progress/Resources/UsersProgress.json"//https://drive.google.com/file/d/1_dKjoaA7BoWnNDXsi0tiCDQBbEfll8pI"
+        //print(JSONSerialization.loadJSON(withFilename: urlString) as Any)
     }
     
     func addNewProgressData() {
@@ -68,4 +95,36 @@ struct DataManager {
     }
     
     
+}
+
+
+
+extension JSONSerialization {
+    
+    static func loadJSON(withFilename filename: String) throws -> Any? {
+        let fm = FileManager.default
+        let urls = fm.urls(for: .documentDirectory, in: .userDomainMask)
+        if let url = urls.first {
+            var fileURL = url.appendingPathComponent(filename)
+            fileURL = fileURL.appendingPathExtension("json")
+            let data = try Data(contentsOf: fileURL)
+            let jsonObject = try JSONSerialization.jsonObject(with: data, options: [.mutableContainers, .mutableLeaves])
+            return jsonObject
+        }
+        return nil
+    }
+    
+    static func save(jsonObject: Any, toFilename filename: String) throws -> Bool{
+        let fm = FileManager.default
+        let urls = fm.urls(for: .documentDirectory, in: .userDomainMask)
+        if let url = urls.first {
+            var fileURL = url.appendingPathComponent(filename)
+            fileURL = fileURL.appendingPathExtension("json")
+            let data = try JSONSerialization.data(withJSONObject: jsonObject, options: [.prettyPrinted])
+            try data.write(to: fileURL, options: [.atomicWrite])
+            return true
+        }
+        
+        return false
+    }
 }

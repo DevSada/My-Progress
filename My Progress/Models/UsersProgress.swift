@@ -25,9 +25,5 @@ struct User: Codable {
 
 // MARK: - ProgressDate
 struct ProgressDate: Codable {
-    let startDate, finishDate: String
-}
-
-struct test: Codable {
-    
+    let progressID, startDate, finishDate: String
 }
